@@ -13,3 +13,9 @@ class UserUpdateForm(forms.ModelForm):
   class Meta: 
     model = User
     fields = ['username','email']
+
+# Posting a project
+class ProjectAddForm(forms.ModelForm): 
+  class Meta: 
+    model = Projects
+    fields = ['name','description','main_technology_used','live_link','screenshot']
