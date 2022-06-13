@@ -19,3 +19,14 @@ class ProjectAddForm(forms.ModelForm):
   class Meta: 
     model = Projects
     fields = ['name','description','main_technology_used','live_link','screenshot']
+
+#Rating form
+class ProjectRatingForm(forms.ModelForm): 
+  review = forms.CharField(widget=forms.Textarea(),required=False)
+  design_rate = forms.ChoiceField(choices=RATE_CHOICES,widget=forms.Select(),required=True)
+  usability_rate = forms.ChoiceField(choices=RATE_CHOICES,widget=forms.Select(),required=True)
+  content_rate = forms.ChoiceField(choices=RATE_CHOICES,widget=forms.Select(),required=True)
+ 
+  class Meta: 
+    model = Ratings
+    fields = ('design_rate','usability_rate','content_rate','review')
