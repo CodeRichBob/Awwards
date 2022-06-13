@@ -1,0 +1,92 @@
+{% extends 'base.html' %} 
+{% load static %} {% load bootstrap5 %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+  <div class="container-fluid">
+    <!--Main image-->
+    <div class="starter-image mb-5" style="background-image: url({% static 'images/starter_img.png' %});">
+      <div class="starter-image-content">
+        <h1 class="text-center">LEXUS DESIGN WHEEL</h1>
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class=" col-md-2">
+            <div class="progress green">
+              <span class="progress-left">
+                  <span class="progress-bar"></span>
+              </span>
+              <span class="progress-right">
+                  <span class="progress-bar"></span>
+              </span>
+              <div class="progress-value">9.0</div>
+            </div>
+            <h2 class="text-center">Design</h2>
+          </div>
+          <div class=" col-md-2">
+            <div class="progress light">
+              <span class="progress-left">
+                  <span class="progress-bar"></span>
+              </span>
+              <span class="progress-right">
+                  <span class="progress-bar"></span>
+              </span>
+              <div class="progress-value">7.0</div>
+            </div>
+            <h2 class="text-center">Usability</h2>
+          </div>
+            <div class=" col-md-2">
+            <div class="progress pink">
+              <span class="progress-left">
+                  <span class="progress-bar"></span>
+              </span>
+              <span class="progress-right">
+                  <span class="progress-bar"></span>
+              </span>
+              <div class="progress-value">6.0</div>
+            </div>
+            <h2 class="text-center">Content</h2>
+          </div>
+          <div class=" col-md-2">
+            <div class="progress red">
+              <span class="progress-left">
+                  <span class="progress-bar"></span>
+              </span>
+              <span class="progress-right">
+                  <span class="progress-bar"></span>
+              </span>
+              <div class="progress-value">7.3</div>
+            </div>
+            <h2 class="text-center">Average</h2>
+          </div>
+          <div class=" col-md-2"></div>
+        </div>
+      </div>
+    </div>
+
+    <!--Displaying posted projects-->
+    <h1 class="text-center">PROJECTS</h1>
+    <div class="d-flex flex-row projects-display">
+      {% for project in projects %}
+        <div class="m-3">
+          <div class="card p-2 all-projects-card">
+            <a href="{% url 'project_details' project.id %}"><img src="{{project.screenshot.url}}" class="img-responsive" alt="project screenshot" style="width:100%;"></a>
+            <div class="card-body">
+              <h1>{{project.name}}</h1>
+              <p>{{project.description|truncatechars:15}}</p>
+              <div class="d-flex justify-content-between">
+                <p><b>Posted on:</b>{{project.date_added}}</p>
+                <a href="{{project.live_link}}" target="_blank" style="text-decoration:none;"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+              </div>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+              <p><b>By:</b>{{project.project_owner.username}}</p>
+              <!--<img src="{{project.project_owner.profile.picture.url}}" alt="" width="50" height="50" class="rounded-circle me-1">-->
+              <button class="btn btn-info"><a href="{% url 'rate' project.id %}" style="text-decoration:none;color:white;"><i class="fa fa-star">Rate</i></a></button>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock content %}
