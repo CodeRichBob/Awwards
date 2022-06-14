@@ -64,3 +64,22 @@ def search_project(request):
   return render(request,'search_results.html',{"found_project":found_project})
 
 
+@login_required(login_url='/accounts/login/')
+def rate_project(request,project_id): 
+  '''Function for rating a project'''
+  project = Projects.objects.get(id=project_id)
+  user = request.user 
+  
+  if request.method == 'POST': 
+    form = ProjectRatingForm(request.POST)
+    if form.is_valid(): 
+      rate = form.save(commit=False)
+      rate.user = user
+      rate.project = project
+      rate.save()
+      return redirect('home')
+  else: 
+    form = ProjectRatingForm()
+  return render(request,'projects/project_rating.html',{"project":project,"form":form})
+
+
