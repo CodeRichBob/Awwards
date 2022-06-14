@@ -1,4 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
+from .forms import ProfileUpdateForm,UserUpdateForm,ProjectAddForm,ProjectRatingForm
+from .models import Profile,Projects, Ratings
+from.serializer import ProfileSerializer,ProjectsSerializer,RatingsSerializer
+from rest_framework import viewsets,permissions
+
 
 # Create your views here.
 def home(request): 
@@ -120,5 +129,21 @@ def project_details(request,project_id):
     "averageRating": averageRating,
   }
   return render(request,'projects/project_details.html',context)
+
+#Profile Api view
+class ProfileView(viewsets.ModelViewSet): 
+  queryset = Profile.objects.all()
+  serializer_class = ProfileSerializer
+  # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+  
+#Projects Api view
+class ProjectsView(viewsets.ModelViewSet): 
+  queryset = Projects.objects.all()
+  serializer_class = ProjectsSerializer
+  
+#Ratings Api view
+class RatingsView(viewsets.ModelViewSet): 
+  queryset = Ratings.objects.all()
+  serializer_class = RatingsSerializer
 
 
