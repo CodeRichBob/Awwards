@@ -56,7 +56,7 @@ class Ratings(models.Model):
   date = models.DateField(auto_now_add=True)
   
   def save_rating(self): 
-    '''Funtion to save a rating'''
+    '''Function to save a rating'''
     self.save()
   
   def __str__(self):
