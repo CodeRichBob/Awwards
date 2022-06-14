@@ -38,3 +38,29 @@ def update_profile(request):
   }
   return render(request,'registration/update_profile.html',context)
 
+
+@login_required(login_url='/accounts/login/')
+def post_project(request): 
+  '''Function handling post project'''
+  if request.method == 'POST': 
+    form = ProjectAddForm(request.POST,request.FILES)
+    if form.is_valid(): 
+      project=form.save(commit=False)
+      project.project_owner = request.user 
+      project.save()
+      messages.success(request,'Your project has been successfully posted!')
+      return redirect('home')
+  else: 
+    form = ProjectAddForm()
+
+  return render(request,'projects/post_project.html',{"form":form})
+
+def search_project(request): 
+  '''Function handling search project'''
+  if 'project' in request.GET and request.GET['project']: 
+    search_term = request.GET.get('project')
+    found_project = Projects.objects.filter(name=search_term).first()
+
+  return render(request,'search_results.html',{"found_project":found_project})
+
+
