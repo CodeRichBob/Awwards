@@ -82,4 +82,43 @@ def rate_project(request,project_id):
     form = ProjectRatingForm()
   return render(request,'projects/project_rating.html',{"project":project,"form":form})
 
+def project_details(request,project_id): 
+  '''Function to obtain requested project's details'''
+  project = Projects.objects.filter(id=project_id).first()
+  try:
+    ratings = Ratings.objects.filter(project=project.id).all()
+  except ObjectDoesNotExist: 
+    raise Http404()
+  
+  #getting average of all rating creteria
+  usability = []
+  content = []
+  design = []
+  
+  for rate in ratings: 
+    usability.append(rate.usability_rate)
+    content.append(rate.content_rate)
+    design.append(rate.design_rate)
+  if len(usability) > 0 or len(content) > 0 or len(design) > 0: 
+    avrg_usability=round(sum(usability)/len(usability),1)
+    avrg_content=round(sum(content)/len(content),1)
+    avrg_design=round(sum(design)/len(design),1)
+
+    averageRating=round((avrg_content+avrg_design+avrg_usability)/3,1)
+  else:
+    avrg_usability=0.0
+    avrg_content=0.0
+    avrg_design=0.0
+    averageRating=0.0
+    
+  context = {
+    "project":project,
+    "ratings": ratings,
+    "usability": avrg_usability,
+    "content": avrg_content,
+    "design": avrg_design,
+    "averageRating": averageRating,
+  }
+  return render(request,'projects/project_details.html',context)
+
 
